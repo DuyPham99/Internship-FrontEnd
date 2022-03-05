@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
@@ -16,6 +16,7 @@ import {
   Typography
 } from '@mui/material';
 import { getInitials } from '../../utils/get-initials';
+import { accountApi } from 'src/api/accountApi';
 
 export const CustomerListResults = ({ customers, ...rest }) => {
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
@@ -61,7 +62,7 @@ export const CustomerListResults = ({ customers, ...rest }) => {
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
   };
-
+  
   return (
     <Card {...rest}>
       <PerfectScrollbar>
@@ -122,13 +123,13 @@ export const CustomerListResults = ({ customers, ...rest }) => {
                         src={customer.avatarUrl}
                         sx={{ mr: 2 }}
                       >
-                        {getInitials(customer.name)}
+                        {getInitials(customer.username)}
                       </Avatar>
                       <Typography
                         color="textPrimary"
                         variant="body1"
                       >
-                        {customer.name}
+                        {customer.username}
                       </Typography>
                     </Box>
                   </TableCell>
