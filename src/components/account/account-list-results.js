@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { IconButton } from '@mui/material';
+
 import {
   Avatar,
   Box,
@@ -16,18 +19,33 @@ import {
   Typography
 } from '@mui/material';
 import { getInitials } from '../../utils/get-initials';
-import { accountApi } from 'src/api/accountApi';
+import { deleteAccounts, getAllAccount } from 'src/api/accountApi';
 
-export const CustomerListResults = ({ customers, ...rest }) => {
+export const AccountListResults = ({ ...rest }) => {
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
+  const [accounts, setAccounts] = useState([]);
+
+  useEffect(() => {
+    const fetchAccountList = async () => {
+      try {
+        const response = await getAllAccount();
+        setAccounts(response);
+        console.log("Success to ccount list from server");
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchAccountList();
+  }, accounts);
+
 
   const handleSelectAll = (event) => {
     let newSelectedCustomerIds;
 
     if (event.target.checked) {
-      newSelectedCustomerIds = customers.map((customer) => customer.id);
+      newSelectedCustomerIds = accounts.map((customer) => customer.id);
     } else {
       newSelectedCustomerIds = [];
     }
@@ -62,7 +80,19 @@ export const CustomerListResults = ({ customers, ...rest }) => {
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
   };
-  
+
+  const handleClickDelete = (event) => {
+    try {
+      deleteAccounts(selectedCustomerIds);
+      setAccounts(accounts.filter(account => {
+        return selectedCustomerIds.includes(account.id)
+      }));
+      setSelectedCustomerIds([]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Card {...rest}>
       <PerfectScrollbar>
@@ -72,43 +102,42 @@ export const CustomerListResults = ({ customers, ...rest }) => {
               <TableRow>
                 <TableCell padding="checkbox">
                   <Checkbox
-                    checked={selectedCustomerIds.length === customers.length}
+                    checked={selectedCustomerIds.length === accounts.length}
                     color="primary"
                     indeterminate={
                       selectedCustomerIds.length > 0
-                      && selectedCustomerIds.length < customers.length
+                      && selectedCustomerIds.length < accounts.length
                     }
                     onChange={handleSelectAll}
                   />
                 </TableCell>
                 <TableCell>
+                  Username
+                </TableCell>
+                <TableCell>
                   Name
                 </TableCell>
                 <TableCell>
-                  Email
+                  Company
                 </TableCell>
                 <TableCell>
-                  Location
+                  Role
                 </TableCell>
                 <TableCell>
-                  Phone
-                </TableCell>
-                <TableCell>
-                  Registration date
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {customers.slice(0, limit).map((customer) => (
+              {accounts.slice(0, limit).map((account) => (
                 <TableRow
                   hover
-                  key={customer.id}
-                  selected={selectedCustomerIds.indexOf(customer.id) !== -1}
+                  key={account.id}
+                  selected={selectedCustomerIds.indexOf(account.id) !== -1}
                 >
                   <TableCell padding="checkbox">
                     <Checkbox
-                      checked={selectedCustomerIds.indexOf(customer.id) !== -1}
-                      onChange={(event) => handleSelectOne(event, customer.id)}
+                      checked={selectedCustomerIds.indexOf(account.id) !== -1}
+                      onChange={(event) => handleSelectOne(event, account.id)}
                       value="true"
                     />
                   </TableCell>
@@ -120,30 +149,33 @@ export const CustomerListResults = ({ customers, ...rest }) => {
                       }}
                     >
                       <Avatar
-                        src={customer.avatarUrl}
+                        src={account.avatarUrl}
                         sx={{ mr: 2 }}
                       >
-                        {getInitials(customer.username)}
+                        {getInitials(account.username)}
                       </Avatar>
                       <Typography
                         color="textPrimary"
                         variant="body1"
                       >
-                        {customer.username}
+                        {account.username}
                       </Typography>
                     </Box>
                   </TableCell>
                   <TableCell>
-                    {customer.email}
+                    {account.staff.name}
                   </TableCell>
                   <TableCell>
-                    {`${customer.address.city}, ${customer.address.state}, ${customer.address.country}`}
+                    {account.company.name}
                   </TableCell>
                   <TableCell>
-                    {customer.phone}
+                    {account.role.id}
                   </TableCell>
                   <TableCell>
-                    {format(customer.createdAt, 'dd/MM/yyyy')}
+                    {/* {format(customer.createdAt, 'dd/MM/yyyy')} */}
+                    <IconButton onClick={handleClickDelete}>
+                      <DeleteOutlineIcon />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               ))}
@@ -153,7 +185,7 @@ export const CustomerListResults = ({ customers, ...rest }) => {
       </PerfectScrollbar>
       <TablePagination
         component="div"
-        count={customers.length}
+        count={accounts.length}
         onPageChange={handlePageChange}
         onRowsPerPageChange={handleLimitChange}
         page={page}
@@ -164,6 +196,6 @@ export const CustomerListResults = ({ customers, ...rest }) => {
   );
 };
 
-CustomerListResults.propTypes = {
+AccountListResults.propTypes = {
   customers: PropTypes.array.isRequired
 };

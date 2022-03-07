@@ -1,59 +1,60 @@
 import Head from 'next/head';
-import { Box, Container } from '@mui/material';
-import { CustomerListResults } from '../components/customer/customer-list-results';
-import { CustomerListToolbar } from '../components/customer/customer-list-toolbar';
+import { Box, Container, Grid, Typography } from '@mui/material';
+import { AccountProfile } from '../components/account1/account-profile';
+import { AccountProfileDetails } from '../components/account1/account-profile-details';
 import { DashboardLayout } from '../components/dashboard-layout';
-import { customers } from '../__mocks__/customers';
-import { useEffect, useState } from 'react';
-import { accountApi } from 'src/api/accountApi';
 
+const Account = () => (
+  <>
+    <Head>
+      <title>
+        Account | Material Kit
+      </title>
+    </Head>
+    <Box
+      component="main"
+      sx={{
+        flexGrow: 1,
+        py: 8
+      }}
+    >
+      <Container maxWidth="lg">
+        <Typography
+          sx={{ mb: 3 }}
+          variant="h4"
+        >
+          Customers
+        </Typography>
+        <Grid
+          container
+          spacing={3}
+        >
+          <Grid
+            item
+            lg={4}
+            md={6}
+            xs={12}
+          >
+            <AccountProfile />
+          </Grid>
+          <Grid
+            item
+            lg={8}
+            md={6}
+            xs={12}
+          >
+            <AccountProfileDetails />
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
+  </>
+);
 
-const Customers = () => {
-  const [accountList, setAccountList] = useState([]);
-
-  useEffect(() => {
-    const fetchAccountList = async () => {
-      try {
-        const response = await accountApi.getAll();
-        setAccountList(response.data);
-        alert("1")
-        console.log("Success to ccount list from server");
-      } catch(error) {
-        alert("1")
-        console.log("Cant get account list from server");
-      }
-    }
-  }, []);
-
-  return (
-    <>
-      <Head>
-        <title>
-          Customers | Material Kit
-        </title>
-      </Head>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          py: 8
-        }}
-      >
-        <Container maxWidth={false}>
-          <CustomerListToolbar />
-          <Box sx={{ mt: 3 }}>
-            <CustomerListResults customers={accountList} />
-          </Box>
-        </Container>
-      </Box>
-    </>
-  );
-}
-
-Customers.getLayout = (page) => (
+Account.getLayout = (page) => (
   <DashboardLayout>
     {page}
   </DashboardLayout>
 );
 
-export default Customers;
+export default Account;

@@ -11,7 +11,8 @@ import { Search as SearchIcon } from '../../icons/search';
 import { Upload as UploadIcon } from '../../icons/upload';
 import { Download as DownloadIcon } from '../../icons/download';
 import { useSelector, useDispatch } from 'react-redux';
-import {increment} from "../../features/counter/counterSlice"
+import { increment } from "../../features/counter/counterSlice"
+import Popup from 'reactjs-popup';
 
 export const CustomerListToolbar = (props) => {
   const count = useSelector(state => state.counter.value);
@@ -32,13 +33,13 @@ export const CustomerListToolbar = (props) => {
           sx={{ m: 1 }}
           variant="h4"
         >
-          Customers
+          Accounts
         </Typography>
         <Box sx={{ m: 1 }}>
           <Button
             startIcon={(<UploadIcon fontSize="small" />)}
             sx={{ mr: 1 }}
-          onClick={() => dispatch(increment())}
+            onClick={() => dispatch(increment())}
           >
             {count}
           </Button>
@@ -52,7 +53,7 @@ export const CustomerListToolbar = (props) => {
             color="primary"
             variant="contained"
           >
-            Add Customers
+            Add Accounts
           </Button>
         </Box>
       </Box>
@@ -74,7 +75,7 @@ export const CustomerListToolbar = (props) => {
                     </InputAdornment>
                   )
                 }}
-                placeholder="Search customer"
+                placeholder="Search account"
                 variant="outlined"
               />
             </Box>
