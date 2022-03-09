@@ -5,6 +5,7 @@ import {
   CardContent, InputAdornment,
   SvgIcon, TextField, Typography
 } from '@mui/material';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { increment } from "../../features/counter/counterSlice";
 import { Download as DownloadIcon } from '../../icons/download';
@@ -12,8 +13,12 @@ import { Search as SearchIcon } from '../../icons/search';
 import { Upload as UploadIcon } from '../../icons/upload';
 
 export const CustomerListToolbar = (props) => {
-  const count = useSelector(state => state.counter.value);
-  const dispatch = useDispatch();
+  const [titleButton, setTitleButton] = useState("Add Accounts");
+  const handleClick = () => {
+    setTitleButton(titleButton == "Add Accounts" ? "Close" : "Add Accounts");
+    props.clickShowForm();
+  }
+
   return (
     <Box {...props}>
       <Box
@@ -35,9 +40,9 @@ export const CustomerListToolbar = (props) => {
           <Button
             color="primary"
             variant="contained"
-            onClick={props.clickShowForm}
+            onClick={handleClick}
           >
-            Add Accounts
+            {titleButton}
           </Button>
         </Box>
       </Box>
