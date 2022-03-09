@@ -1,5 +1,7 @@
 import { Box, Container } from '@mui/material';
 import Head from 'next/head';
+import { useState } from 'react';
+import { AccountProfileDetails } from 'src/components/account1/account-profile-details';
 import { AccountListResults } from '../components/account/account-list-results';
 import { CustomerListToolbar } from '../components/account/account-list-toolbar';
 import { AccountForm } from '../components/account/form-create-account';
@@ -7,9 +9,15 @@ import { DashboardLayout } from '../components/dashboard-layout';
 
 
 const Accounts = () => {
+  const [check, setCheck] = useState(false);
+
+  const clickShowForm = () => {
+    setCheck(!check);
+  }
+
   return (
     <>
-      <AccountForm></AccountForm>
+      {check && <AccountProfileDetails />}
       <Head>
         <title>
           Accounts | Material Kit
@@ -23,9 +31,9 @@ const Accounts = () => {
         }}
       >
         <Container maxWidth={false}>
-          <CustomerListToolbar />
+          <CustomerListToolbar clickShowForm = {clickShowForm} />
           <Box sx={{ mt: 3 }}>
-            <AccountListResults/>
+            <AccountListResults />
           </Box>
         </Container>
       </Box>

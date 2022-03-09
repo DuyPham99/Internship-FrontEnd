@@ -20,6 +20,7 @@ import {
 } from '@mui/material';
 import { getInitials } from '../../utils/get-initials';
 import { deleteAccounts, getAllAccount } from 'src/api/accountApi';
+import { AccountProfileDetails } from '../account1/account-profile-details';
 
 export const AccountListResults = ({ ...rest }) => {
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
@@ -95,6 +96,7 @@ export const AccountListResults = ({ ...rest }) => {
 
   return (
     <Card {...rest}>
+      {/* <AccountProfileDetails /> */}
       <PerfectScrollbar>
         <Box sx={{ minWidth: 1050 }}>
           <Table>

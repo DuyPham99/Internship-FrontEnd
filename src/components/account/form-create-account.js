@@ -1,4 +1,4 @@
-import { Box, FormControl, Grid, MenuItem, Select, TextField } from "@mui/material";
+import { Box, Divider, FormControl, Grid, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { makeStyles } from '@mui/styles';
@@ -15,6 +15,14 @@ const useStyles = makeStyles(theme => ({
             width: '90%',
             margin: theme.spacing(1)
         }
+    },
+    dropDownRole: {
+        width: '30%',
+        margin: theme.spacing(1)
+    },
+    dropDownCompany: {
+        width: '90%',
+        margin: theme.spacing(1)
     }
 }))
 
@@ -30,6 +38,10 @@ export const AccountForm = () => {
             noValidate
             autoComplete="off"
         >
+            <Typography variant="h4" gutterBottom component="div">
+                New Account
+            </Typography>
+            <Divider component="div" />
             <form>
                 <Grid container>
                     <Grid item xs={6}>
@@ -52,7 +64,21 @@ export const AccountForm = () => {
                             id="demo-simple-select"
                             value={10}
                             label="Age"
-                            // onChange={handleChange}
+                            className={classes.dropDownRole}
+                        // onChange={handleChange}
+                        >
+                            <MenuItem value={10}>Ten</MenuItem>
+                            <MenuItem value={20}>Twenty</MenuItem>
+                            <MenuItem value={30}>Thirty</MenuItem>
+                        </Select>
+                        <br></br>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={10}
+                            label="Age"
+                            className={classes.dropDownCompany}
+                        // onChange={handleChange}
                         >
                             <MenuItem value={10}>Ten</MenuItem>
                             <MenuItem value={20}>Twenty</MenuItem>
@@ -60,6 +86,7 @@ export const AccountForm = () => {
                         </Select>
                     </Grid>
                 </Grid>
+                <Divider component="div" />
             </form>
         </Box>
     );

@@ -2,22 +2,18 @@ import {
   Box,
   Button,
   Card,
-  CardContent,
-  TextField,
-  InputAdornment,
-  SvgIcon, Typography
+  CardContent, InputAdornment,
+  SvgIcon, TextField, Typography
 } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { increment } from "../../features/counter/counterSlice";
+import { Download as DownloadIcon } from '../../icons/download';
 import { Search as SearchIcon } from '../../icons/search';
 import { Upload as UploadIcon } from '../../icons/upload';
-import { Download as DownloadIcon } from '../../icons/download';
-import { useSelector, useDispatch } from 'react-redux';
-import { increment } from "../../features/counter/counterSlice"
-import Popup from 'reactjs-popup';
 
 export const CustomerListToolbar = (props) => {
   const count = useSelector(state => state.counter.value);
   const dispatch = useDispatch();
-
   return (
     <Box {...props}>
       <Box
@@ -37,21 +33,9 @@ export const CustomerListToolbar = (props) => {
         </Typography>
         <Box sx={{ m: 1 }}>
           <Button
-            startIcon={(<UploadIcon fontSize="small" />)}
-            sx={{ mr: 1 }}
-            onClick={() => dispatch(increment())}
-          >
-            {count}
-          </Button>
-          <Button
-            startIcon={(<DownloadIcon fontSize="small" />)}
-            sx={{ mr: 1 }}
-          >
-            Export
-          </Button>
-          <Button
             color="primary"
             variant="contained"
+            onClick={props.clickShowForm}
           >
             Add Accounts
           </Button>

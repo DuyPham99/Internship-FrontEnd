@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { makeStyles } from '@mui/styles';
 import {
   Box,
   Button,
@@ -7,8 +8,12 @@ import {
   CardHeader,
   Divider,
   Grid,
-  TextField
+  MenuItem,
+  Select,
+  TextField,
+  Typography
 } from '@mui/material';
+import { useForm } from 'react-hook-form';
 
 const states = [
   {
@@ -24,6 +29,22 @@ const states = [
     label: 'San Francisco'
   }
 ];
+const useStyles = makeStyles(theme => ({
+  root: {
+    '& .MuiTextField-root': {
+      width: '90%',
+      // margin: theme.spacing(1)
+    }
+  },
+  dropDownRole: {
+    width: '30%',
+    margin: theme.spacing(1)
+  },
+  dropDownCompany: {
+    width: '90%',
+    margin: theme.spacing(1)
+  }
+}))
 
 export const AccountProfileDetails = (props) => {
   const [values, setValues] = useState({
@@ -34,6 +55,9 @@ export const AccountProfileDetails = (props) => {
     state: 'Alabama',
     country: 'USA'
   });
+  const { username, password, handleSubmit } = useForm();
+  // const [values, setValues] = useState();
+  const classes = useStyles();
 
   const handleChange = (event) => {
     setValues({
@@ -50,8 +74,103 @@ export const AccountProfileDetails = (props) => {
     >
       <Card>
         <CardHeader
-          subheader="The information can be edited"
-          title="Profile"
+          title="New Account"
+        />
+        <CardContent>
+          <Grid
+            container
+            spacing={3}
+          >
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Username"
+                name="username"
+                onChange={handleChange}
+                required
+                value={values.username}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Company"
+                name="state"
+                onChange={handleChange}
+                required
+                select
+                SelectProps={{ native: true }}
+                value={values.state}
+                variant="outlined"
+              >
+                {states.map((option) => (
+                  <option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Password"
+                name="password"
+                onChange={handleChange}
+                required
+                value={values.password}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextField
+                fullWidth
+                label="Role"
+                name="role"
+                onChange={handleChange}
+                required
+                select
+                SelectProps={{ native: true }}
+                value={values.role}
+                variant="outlined"
+              >
+                {states.map((option) => (
+                  <option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </option>
+                ))}
+              </TextField>
+            </Grid>
+          </Grid>
+        </CardContent>
+
+
+        <Divider />
+
+        <CardHeader
+          title="Infomation"
         />
         <Divider />
         <CardContent>
