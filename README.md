@@ -70,7 +70,7 @@ material-kit-react
 		├── _app.js
 		├── _document.js
 		├── account.js
-		├── customers.js
+		├── contracts.js
 		├── index.js
 		├── login.js
 		├── products.js

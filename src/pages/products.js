@@ -4,24 +4,24 @@ import { ProductListToolbar } from '../components/product/product-list-toolbar';
 import { ProductCard } from '../components/product/product-card';
 import { DashboardLayout } from '../components/dashboard-layout';
 import { useEffect, useState } from 'react';
-import {getAllProduct} from "src/api/productApis";
+import { getAllProduct } from 'src/api/productApis';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
 
-  useEffect (() => {
+  useEffect(() => {
     const fetchProductList = async () => {
       try {
         const response = await getAllProduct();
         setProducts(response);
-        console.log("Success to ccount list from server");
+        console.log('Success to ccount list from server');
       } catch (error) {
         console.log(error);
       }
-    }
+    };
     console.log(products);
     fetchProductList();
-    console.log("Success to ccount list from server");
+    console.log('Success to ccount list from server');
   }, []);
 
   return (
@@ -39,7 +39,7 @@ const Products = () => {
         }}
       >
         <Container maxWidth={false}>
-          <ProductListToolbar />
+          <ProductListToolbar/>
           <Box sx={{ pt: 3 }}>
             <Grid
               container
@@ -53,7 +53,7 @@ const Products = () => {
                   md={6}
                   xs={12}
                 >
-                  <ProductCard product={product} />
+                  <ProductCard product={product}/>
                 </Grid>
               ))}
             </Grid>
@@ -62,8 +62,8 @@ const Products = () => {
       </Box>
     </>
   );
-}
-  
+};
+
 Products.getLayout = (page) => (
   <DashboardLayout>
     {page}

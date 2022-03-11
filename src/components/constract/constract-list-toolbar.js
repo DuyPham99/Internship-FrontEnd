@@ -2,22 +2,28 @@ import {
   Box,
   Button,
   Card,
-  CardContent, InputAdornment,
-  SvgIcon, TextField, Typography
+  CardContent,
+  InputAdornment,
+  SvgIcon,
+  TextField,
+  Typography
 } from '@mui/material';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { increment } from "../../features/counter/counterSlice";
-import { Download as DownloadIcon } from '../../icons/download';
+import React from 'react'
 import { Search as SearchIcon } from '../../icons/search';
-import { Upload as UploadIcon } from '../../icons/upload';
+import { useDispatch, useSelector } from 'react-redux';
+import { showPopup } from '../../features/counter/contractSlice';
 
-export const AccountListToolbar = (props) => {
-  const [titleButton, setTitleButton] = useState("Add Accounts");
+export const ContractListToolbar = (props) => {
+  const [titleButton, setTitleButton] = useState('Add Contracts');
+  const count = useSelector(state => state.contract.value);
+  const dispatch = useDispatch();
+
   const handleClick = () => {
-    setTitleButton(titleButton == "Add Accounts" ? "Close" : "Add Accounts");
-    props.clickShowForm();
-  }
+    setTitleButton(titleButton == 'Add Accounts' ? 'Close' : 'Add Contracts');
+    // props.clickShowForm();
+    dispatch(showPopup());
+  };
 
   return (
     <Box {...props}>
@@ -34,7 +40,7 @@ export const AccountListToolbar = (props) => {
           sx={{ m: 1 }}
           variant="h4"
         >
-          Accounts
+          Contracts
         </Typography>
         <Box sx={{ m: 1 }}>
           <Button
@@ -59,7 +65,7 @@ export const AccountListToolbar = (props) => {
                         color="action"
                         fontSize="small"
                       >
-                        <SearchIcon />
+                        <SearchIcon/>
                       </SvgIcon>
                     </InputAdornment>
                   )
@@ -73,4 +79,4 @@ export const AccountListToolbar = (props) => {
       </Box>
     </Box>
   );
-}
+};

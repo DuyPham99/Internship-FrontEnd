@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import PropTypes from 'prop-types';
-import { format } from 'date-fns';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { IconButton } from '@mui/material';
-
 import {
   Avatar,
   Box,
   Card,
   Checkbox,
+  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -20,9 +18,9 @@ import {
 } from '@mui/material';
 import { getInitials } from '../../utils/get-initials';
 import { deleteAccounts, getAllAccount } from 'src/api/accountApi';
-import { AccountProfileDetails } from './account-profile-details';
+import { Status } from './StatusBar';
 
-export const AccountListResults = ({ ...rest }) => {
+export const ContractListResults = ({ ...rest }) => {
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
@@ -114,18 +112,22 @@ export const AccountListResults = ({ ...rest }) => {
                   />
                 </TableCell>
                 <TableCell>
-                  Username
+                  ID
                 </TableCell>
                 <TableCell>
-                  Name
+                  Product
                 </TableCell>
                 <TableCell>
-                  Company
+                  Customer
                 </TableCell>
                 <TableCell>
-                  Role
+                  Start date
                 </TableCell>
                 <TableCell>
+                  End date
+                </TableCell>
+                <TableCell>
+                  STATUS
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -150,12 +152,6 @@ export const AccountListResults = ({ ...rest }) => {
                         display: 'flex'
                       }}
                     >
-                      <Avatar
-                        src={account.avatarUrl}
-                        sx={{ mr: 2 }}
-                      >
-                        {getInitials(account.username)}
-                      </Avatar>
                       <Typography
                         color="textPrimary"
                         variant="body1"
@@ -179,6 +175,9 @@ export const AccountListResults = ({ ...rest }) => {
                       <DeleteOutlineIcon />
                     </IconButton>
                   </TableCell>
+                  <TableCell>
+                    <Status status="DECLINE"/>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -198,6 +197,6 @@ export const AccountListResults = ({ ...rest }) => {
   );
 };
 
-AccountListResults.propTypes = {
+ContractListResults.propTypes = {
   customers: PropTypes.array.isRequired
 };
