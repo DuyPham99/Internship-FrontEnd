@@ -12,7 +12,7 @@ import { useState } from 'react';
 import React from 'react'
 import { Search as SearchIcon } from '../../icons/search';
 import { useDispatch, useSelector } from 'react-redux';
-import { showPopup } from '../../features/counter/contractSlice';
+import { showPopup } from '../../features/contractSlice';
 
 export const ContractListToolbar = (props) => {
   const [titleButton, setTitleButton] = useState('Add Contracts');

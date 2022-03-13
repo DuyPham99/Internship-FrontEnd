@@ -11,7 +11,6 @@ export const contractSlice = createSlice({
     }
   }
 });
-
 // Action creators are generated for each case reducer function
 export const { showPopup } = contractSlice.actions;
 

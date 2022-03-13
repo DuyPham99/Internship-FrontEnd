@@ -164,7 +164,7 @@ export const ContractListResults = ({ ...rest }) => {
                     {account.staff.name}
                   </TableCell>
                   <TableCell>
-                    {account.company.name}
+                    {/*{account.company.name}*/}
                   </TableCell>
                   <TableCell>
                     {account.role.id}

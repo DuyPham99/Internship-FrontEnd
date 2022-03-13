@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
-import counterReducer from '../features/counter/counterSlice'
-import contractReducer from '../features/counter/contractSlice'
+import contractReducer  from '../features/contractSlice';
+import createContractReducer  from '../features/contractFormSlice';
 
 export default configureStore({
   reducer: {
-    contract: contractReducer
-  }
+    contract: contractReducer,
+    createContract: createContractReducer
+  },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 })
