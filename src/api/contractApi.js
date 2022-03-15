@@ -9,6 +9,6 @@ export const createContract= async (contract) => {
   const url = '/contract';
   alert("1")
   console.log(contract);
-  // return await apiClient.post(contract);
+  return await apiClient.post(url, contract);
 }
 

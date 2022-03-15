@@ -19,32 +19,33 @@ import {
 import { getInitials } from '../../utils/get-initials';
 import { deleteAccounts, getAllAccount } from 'src/api/accountApi';
 import { Status } from './StatusBar';
+import { getAllContract } from '../../api/contractApi';
 
 export const ContractListResults = ({ ...rest }) => {
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
-  const [accounts, setAccounts] = useState([]);
+  const [contracts, setContracts] = useState([]);
 
   useEffect(() => {
-    const fetchAccountList = async () => {
+    const fetchContractList = async () => {
       try {
-        const response = await getAllAccount();
-        setAccounts(response);
-        console.log("Success to ccount list from server");
+        const response = await getAllContract();
+        setContracts(response);
+        console.log(response);
+        console.log('Success to ccount list from server');
       } catch (error) {
         console.log(error);
       }
-    }
-    fetchAccountList();
-  }, accounts);
-
+    };
+    fetchContractList();
+  }, contracts);
 
   const handleSelectAll = (event) => {
     let newSelectedCustomerIds;
 
     if (event.target.checked) {
-      newSelectedCustomerIds = accounts.map((customer) => customer.id);
+      newSelectedCustomerIds = contracts.map((customer) => customer.id);
     } else {
       newSelectedCustomerIds = [];
     }
@@ -83,8 +84,8 @@ export const ContractListResults = ({ ...rest }) => {
   const handleClickDelete = (event) => {
     try {
       deleteAccounts(selectedCustomerIds);
-      setAccounts(accounts.filter(account => {
-        return selectedCustomerIds.includes(account.id)
+      setContracts(contracts.filter(account => {
+        return selectedCustomerIds.includes(account.id);
       }));
       setSelectedCustomerIds([]);
     } catch (error) {
@@ -102,11 +103,11 @@ export const ContractListResults = ({ ...rest }) => {
               <TableRow>
                 <TableCell padding="checkbox">
                   <Checkbox
-                    checked={selectedCustomerIds.length === accounts.length}
+                    checked={selectedCustomerIds.length === contracts.length}
                     color="primary"
                     indeterminate={
                       selectedCustomerIds.length > 0
-                      && selectedCustomerIds.length < accounts.length
+                      && selectedCustomerIds.length < contracts.length
                     }
                     onChange={handleSelectAll}
                   />
@@ -132,16 +133,16 @@ export const ContractListResults = ({ ...rest }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {accounts.slice(0, limit).map((account) => (
+              {contracts.slice(0, limit).map((contract) => (
                 <TableRow
                   hover
-                  key={account.id}
-                  selected={selectedCustomerIds.indexOf(account.id) !== -1}
+                  key={contract.id}
+                  selected={selectedCustomerIds.indexOf(contract.id) !== -1}
                 >
                   <TableCell padding="checkbox">
                     <Checkbox
-                      checked={selectedCustomerIds.indexOf(account.id) !== -1}
-                      onChange={(event) => handleSelectOne(event, account.id)}
+                      checked={selectedCustomerIds.indexOf(contract.id) !== -1}
+                      onChange={(event) => handleSelectOne(event, contract.id)}
                       value="true"
                     />
                   </TableCell>
@@ -156,24 +157,24 @@ export const ContractListResults = ({ ...rest }) => {
                         color="textPrimary"
                         variant="body1"
                       >
-                        {account.username}
+                        {contract.id}
                       </Typography>
                     </Box>
                   </TableCell>
-                  <TableCell>
-                    {account.staff.name}
+                  <TableCell style={{
+                    whiteSpace: 'normal',
+                    wordWrap: 'break-word'
+                  }}>
+                    {contract.product.map(x => x.name + ',')}
                   </TableCell>
                   <TableCell>
-                    {/*{account.company.name}*/}
+                    {contract.customer.name}
                   </TableCell>
                   <TableCell>
-                    {account.role.id}
+                    {contract.dateStart}
                   </TableCell>
                   <TableCell>
-                    {/* {format(customer.createdAt, 'dd/MM/yyyy')} */}
-                    <IconButton onClick={handleClickDelete}>
-                      <DeleteOutlineIcon />
-                    </IconButton>
+                    {contract.dateEnd}
                   </TableCell>
                   <TableCell>
                     <Status status="DECLINE"/>
@@ -186,7 +187,7 @@ export const ContractListResults = ({ ...rest }) => {
       </PerfectScrollbar>
       <TablePagination
         component="div"
-        count={accounts.length}
+        count={contracts.length}
         onPageChange={handlePageChange}
         onRowsPerPageChange={handleLimitChange}
         page={page}

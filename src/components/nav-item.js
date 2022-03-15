@@ -2,12 +2,25 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { Box, Button, ListItem } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 export const NavItem = (props) => {
   const { href, icon, title, ...others } = props;
   const router = useRouter();
   const active = href ? (router.pathname === href) : false;
 
+  if (typeof window !== 'undefined') {
+    var token = localStorage.getItem('token');
+  } else {
+    var token = "";
+  }
+
+  useEffect(() => {
+    if (!token) {
+      router.push('/login');
+    }
+  }, token);
   return (
     <ListItem
       disableGutters

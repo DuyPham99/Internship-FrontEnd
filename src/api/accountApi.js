@@ -10,3 +10,9 @@ export const deleteAccounts = (ids) => {
     return apiClient.post(url, ids);
 }
 
+export const login = (account) => {
+  const url = '/login';
+  console.log(account);
+  return apiClient.post(url, account);
+}
+
