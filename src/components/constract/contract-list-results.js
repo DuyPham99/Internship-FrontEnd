@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import PropTypes from 'prop-types';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import * as React from 'react';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Avatar,
   Box,
@@ -19,7 +22,7 @@ import {
 import { getInitials } from '../../utils/get-initials';
 import { deleteAccounts, getAllAccount } from 'src/api/accountApi';
 import { Status } from './StatusBar';
-import { getAllContract } from '../../api/contractApi';
+import { contractApprove, contractClose, getAllContract } from '../../api/contractApi';
 
 export const ContractListResults = ({ ...rest }) => {
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
@@ -93,6 +96,16 @@ export const ContractListResults = ({ ...rest }) => {
     }
   };
 
+  const approve = (event, id) => {
+    contractApprove(id);
+    window.location.reload();
+  };
+
+  const cancel = (event, id) => {
+    contractClose(id);
+    window.location.reload();
+  };
+
   return (
     <Card {...rest}>
       {/* <AccountProfileDetails /> */}
@@ -129,6 +142,8 @@ export const ContractListResults = ({ ...rest }) => {
                 </TableCell>
                 <TableCell>
                   STATUS
+                </TableCell>
+                <TableCell>
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -177,8 +192,19 @@ export const ContractListResults = ({ ...rest }) => {
                     {contract.dateEnd}
                   </TableCell>
                   <TableCell>
-                    <Status status="DECLINE"/>
+                    <Status status={contract.status}/>
                   </TableCell>
+                  {
+                    contract.status === 'PENDING' && <TableCell>
+                      <IconButton color="secondary"
+                                  onClick={(event) => approve(event, contract.id)}>
+                        <CheckIcon/>
+                      </IconButton>
+                      <IconButton color="error" onClick={(event) => cancel(event, contract.id)}>
+                        <CloseIcon/>
+                      </IconButton>
+                    </TableCell>
+                  }
                 </TableRow>
               ))}
             </TableBody>

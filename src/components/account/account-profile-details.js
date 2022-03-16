@@ -1,5 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { makeStyles } from '@mui/styles';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
 import {
   Box,
   Button,
@@ -13,7 +16,8 @@ import {
   TextField,
   Typography
 } from '@mui/material';
-import { useForm } from 'react-hook-form';
+import { getAllAccount, getAllRole, saveAccount } from '../../api/accountApi';
+import { getAllCompany } from '../../api/companyApi';
 
 const states = [
   {
@@ -32,7 +36,7 @@ const states = [
 const useStyles = makeStyles(theme => ({
   root: {
     '& .MuiTextField-root': {
-      width: '90%',
+      width: '90%'
       // margin: theme.spacing(1)
     }
   },
@@ -44,20 +48,14 @@ const useStyles = makeStyles(theme => ({
     width: '90%',
     margin: theme.spacing(1)
   }
-}))
+}));
 
 export const AccountProfileDetails = (props) => {
-  const [values, setValues] = useState({
-    firstName: 'Katarina',
-    lastName: 'Smith',
-    email: 'demo@devias.io',
-    phone: '',
-    state: 'Alabama',
-    country: 'USA'
-  });
-  const { username, password, handleSubmit } = useForm();
+  const [values, setValues] = useState({});
   // const [values, setValues] = useState();
   const classes = useStyles();
+  const [listCompany, setListCompany] = useState([]);
+  const [listRole, setListRole] = useState([]);
 
   const handleChange = (event) => {
     setValues({
@@ -66,11 +64,76 @@ export const AccountProfileDetails = (props) => {
     });
   };
 
+  useEffect(() => {
+    const fetchCompanyList = async () => {
+      try {
+        const response = await getAllCompany();
+        setListCompany(response);
+        console.log("Success to ccount list from server");
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchCompanyList();
+  }, listCompany);
+
+  useEffect(() => {
+    const fetchRoleList = async () => {
+      try {
+        const response = await getAllRole();
+        setListRole(response);
+        console.log("Success to ccount list from server");
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchRoleList();
+  }, listRole);
+
+  const validationSchema = Yup.object().shape({
+    username: Yup.string().required('Username is required'),
+    company: Yup.string()
+                .required('Company is required'),
+    firstName: Yup.string()
+                  .required('FirstName is required'),
+    lastName: Yup.string()
+                 .required('LastName is required'),
+    phone: Yup.string()
+              .required('Phone Number is required'),
+    email: Yup.string()
+              .required('Email is required')
+              .email('Email is invalid'),
+    password: Yup.string()
+                 .required('Password is required')
+                 .min(6, 'Password must be at least 6 characters')
+                 .max(20, 'Password must not exceed 20 characters'),
+    role: Yup.string()
+             .required('Role is required')
+
+  });
+  const {
+    handleSubmit,
+    register,
+    control,
+    formState: { errors }
+  } = useForm({ resolver: yupResolver(validationSchema) });
+
+  const onSubmit = (data) => {
+    const saveAccount1 = async () => {
+      try {
+        const response = await saveAccount(data);
+        window.location.reload();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    saveAccount1();
+  }
   return (
-    <form
-      autoComplete="off"
-      noValidate
-      {...props}
+    <form onSubmit={handleSubmit(onSubmit)}
+          autoComplete="off"
+          noValidate
+          {...props}
     >
       <Card>
         <CardHeader
@@ -87,14 +150,19 @@ export const AccountProfileDetails = (props) => {
               xs={12}
             >
               <TextField
+
                 fullWidth
                 label="Username"
                 name="username"
                 onChange={handleChange}
-                required
                 value={values.username}
                 variant="outlined"
+                {...register('username')}
+                error={errors.username ? true : false}
               />
+              <Typography variant="inherit" color="red">
+                {errors.username?.message}
+              </Typography>
             </Grid>
             <Grid
               item
@@ -111,16 +179,21 @@ export const AccountProfileDetails = (props) => {
                 SelectProps={{ native: true }}
                 value={values.state}
                 variant="outlined"
+                {...register('company')}
+                error={errors.company ? true : false}
               >
-                {states.map((option) => (
+                {listCompany.map((option) => (
                   <option
-                    key={option.value}
-                    value={option.value}
+                    key={option.id}
+                    // value={option.id}
                   >
-                    {option.label}
+                    {option.name}
                   </option>
                 ))}
               </TextField>
+              <Typography variant="inherit" color="red">
+                {errors.company?.message}
+              </Typography>
             </Grid>
             <Grid
               item
@@ -130,12 +203,18 @@ export const AccountProfileDetails = (props) => {
               <TextField
                 fullWidth
                 label="Password"
+                type="password"
                 name="password"
                 onChange={handleChange}
                 required
                 value={values.password}
                 variant="outlined"
+                {...register('password')}
+                error={errors.password ? true : false}
               />
+              <Typography variant="inherit" color="red">
+                {errors.password?.message}
+              </Typography>
             </Grid>
             <Grid
               item
@@ -152,27 +231,32 @@ export const AccountProfileDetails = (props) => {
                 SelectProps={{ native: true }}
                 value={values.role}
                 variant="outlined"
+                {...register('role')}
+                error={errors.role ? true : false}
               >
-                {states.map((option) => (
+                {listRole.map((role) => (
                   <option
-                    key={option.value}
-                    value={option.value}
+                    key={role}
+                    value={role}
                   >
-                    {option.label}
+                    {role}
                   </option>
                 ))}
               </TextField>
+              <Typography variant="inherit" color="red">
+                {errors.role?.message}
+              </Typography>
             </Grid>
           </Grid>
         </CardContent>
 
 
-        <Divider />
+        <Divider/>
 
         <CardHeader
           title="Infomation"
         />
-        <Divider />
+        <Divider/>
         <CardContent>
           <Grid
             container
@@ -185,14 +269,18 @@ export const AccountProfileDetails = (props) => {
             >
               <TextField
                 fullWidth
-                helperText="Please specify the first name"
                 label="First name"
                 name="firstName"
                 onChange={handleChange}
-                required
                 value={values.firstName}
+                required
                 variant="outlined"
+                {...register('firstName')}
+                error={errors.firstName ? true : false}
               />
+              <Typography variant="inherit" color="red">
+                {errors.firstName?.message}
+              </Typography>
             </Grid>
             <Grid
               item
@@ -201,13 +289,18 @@ export const AccountProfileDetails = (props) => {
             >
               <TextField
                 fullWidth
-                label="Last name"
+                label="Address"
                 name="lastName"
                 onChange={handleChange}
                 required
                 value={values.lastName}
                 variant="outlined"
+                {...register('lastName')}
+                error={errors.lastName ? true : false}
               />
+              <Typography variant="inherit" color="red">
+                {errors.lastName?.message}
+              </Typography>
             </Grid>
             <Grid
               item
@@ -222,7 +315,12 @@ export const AccountProfileDetails = (props) => {
                 required
                 value={values.email}
                 variant="outlined"
+                {...register('email')}
+                error={errors.email ? true : false}
               />
+              <Typography variant="inherit" color="red">
+                {errors.email?.message}
+              </Typography>
             </Grid>
             <Grid
               item
@@ -237,11 +335,16 @@ export const AccountProfileDetails = (props) => {
                 type="number"
                 value={values.phone}
                 variant="outlined"
+                {...register('phone')}
+                error={errors.phone ? true : false}
               />
+              <Typography variant="inherit" color="red">
+                {errors.phone?.message}
+              </Typography>
             </Grid>
           </Grid>
         </CardContent>
-        <Divider />
+        <Divider/>
         <Box
           sx={{
             display: 'flex',
@@ -250,6 +353,7 @@ export const AccountProfileDetails = (props) => {
           }}
         >
           <Button
+            type="submit"
             color="primary"
             variant="contained"
           >

@@ -17,6 +17,7 @@
     "@emotion/react": "^11.5.0",
     "@emotion/server": "^11.4.0",
     "@emotion/styled": "^11.3.0",
+    "@hookform/resolvers": "^2.8.8",
     "@mui/icons-material": "^5.0.5",
     "@mui/lab": "^5.0.0-alpha.53",
     "@mui/material": "^5.0.6",
@@ -41,7 +42,7 @@
     "reactjs-popup": "^2.0.5",
     "redux": "^4.1.2",
     "uuid": "^8.3.0",
-    "yup": "^0.32.9"
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "eslint": "^7.32.0",

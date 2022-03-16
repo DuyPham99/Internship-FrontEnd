@@ -33,14 +33,13 @@ export const AccountListResults = ({ ...rest }) => {
       try {
         const response = await getAllAccount();
         setAccounts(response);
-        console.log("Success to ccount list from server");
+        console.log('Success to ccount list from server');
       } catch (error) {
         console.log(error);
       }
-    }
+    };
     fetchAccountList();
   }, accounts);
-
 
   const handleSelectAll = (event) => {
     let newSelectedCustomerIds;
@@ -86,7 +85,7 @@ export const AccountListResults = ({ ...rest }) => {
     try {
       deleteAccounts(selectedCustomerIds);
       setAccounts(accounts.filter(account => {
-        return selectedCustomerIds.includes(account.id)
+        return selectedCustomerIds.includes(account.id) === false;
       }));
       setSelectedCustomerIds([]);
     } catch (error) {
@@ -176,7 +175,7 @@ export const AccountListResults = ({ ...rest }) => {
                   <TableCell>
                     {/* {format(customer.createdAt, 'dd/MM/yyyy')} */}
                     <IconButton onClick={handleClickDelete}>
-                      <DeleteOutlineIcon />
+                      <DeleteOutlineIcon/>
                     </IconButton>
                   </TableCell>
                 </TableRow>

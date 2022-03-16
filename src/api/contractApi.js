@@ -7,8 +7,17 @@ export const getAllContract= async () => {
 
 export const createContract= async (contract) => {
   const url = '/contract';
-  alert("1")
   console.log(contract);
   return await apiClient.post(url, contract);
+}
+
+export const contractApprove= async (id) => {
+  const url = '/contract/approve';
+  return await apiClient.post(url, id);
+}
+
+export const contractClose= async (id) => {
+  const url = '/contract/close';
+  return await apiClient.post(url, id);
 }
 
