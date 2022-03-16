@@ -42,8 +42,6 @@ export default function RegisterContractForm() {
   const [value, setValue] = React.useState([new Date(), new Date()]);
   const [products, setProducts] = React.useState([]);
   const { handleSubmit, reset, control, register } = useForm();
-  const state = useSelector(state => state.createContract.value);
-  const dispatch = useDispatch();
   const [data, setData] = useState([]);
 
   const handleChange = (event) => {

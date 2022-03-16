@@ -9,7 +9,7 @@ import {
   Avatar,
   Box,
   Card,
-  Checkbox,
+  Checkbox, Dialog,
   IconButton,
   Table,
   TableBody,
@@ -23,6 +23,8 @@ import { getInitials } from '../../utils/get-initials';
 import { deleteAccounts, getAllAccount } from 'src/api/accountApi';
 import { Status } from './StatusBar';
 import { contractApprove, contractClose, getAllContract } from '../../api/contractApi';
+import { ContractDetail } from './constract-detail';
+import Checkout from './contract-form';
 
 export const ContractListResults = ({ ...rest }) => {
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
@@ -106,24 +108,33 @@ export const ContractListResults = ({ ...rest }) => {
     window.location.reload();
   };
 
+  const [contractSelected, setContractSelected] = useState({});
+  const [check, setCheck] = useState(false);
+
+  const close = () => {
+    setCheck(false);
+  };
+
   return (
     <Card {...rest}>
-      {/* <AccountProfileDetails /> */}
+      <Dialog open={check}>
+        <ContractDetail contract={contractSelected} close={close}/>
+      </Dialog>
       <PerfectScrollbar>
         <Box sx={{ minWidth: 1050 }}>
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell padding="checkbox">
-                  <Checkbox
-                    checked={selectedCustomerIds.length === contracts.length}
-                    color="primary"
-                    indeterminate={
-                      selectedCustomerIds.length > 0
-                      && selectedCustomerIds.length < contracts.length
-                    }
-                    onChange={handleSelectAll}
-                  />
+                  {/*<Checkbox*/}
+                  {/*  checked={selectedCustomerIds.length === contracts.length}*/}
+                  {/*  color="primary"*/}
+                  {/*  indeterminate={*/}
+                  {/*    selectedCustomerIds.length > 0*/}
+                  {/*    && selectedCustomerIds.length < contracts.length*/}
+                  {/*  }*/}
+                  {/*  onChange={handleSelectAll}*/}
+                  {/*/>*/}
                 </TableCell>
                 <TableCell>
                   ID
@@ -153,13 +164,17 @@ export const ContractListResults = ({ ...rest }) => {
                   hover
                   key={contract.id}
                   selected={selectedCustomerIds.indexOf(contract.id) !== -1}
+                  onClick={() => {
+                    setContractSelected(contract);
+                    setCheck(true);
+                  }}
                 >
                   <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={selectedCustomerIds.indexOf(contract.id) !== -1}
-                      onChange={(event) => handleSelectOne(event, contract.id)}
-                      value="true"
-                    />
+                    {/*<Checkbox*/}
+                    {/*  checked={selectedCustomerIds.indexOf(contract.id) !== -1}*/}
+                    {/*  onChange={(event) => handleSelectOne(event, contract.id)}*/}
+                    {/*  value="true"*/}
+                    {/*/>*/}
                   </TableCell>
                   <TableCell>
                     <Box

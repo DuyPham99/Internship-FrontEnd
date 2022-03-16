@@ -21,7 +21,6 @@ export const ContractListToolbar = (props) => {
 
   const handleClick = () => {
     setTitleButton(titleButton == 'Add Accounts' ? 'Close' : 'Add Contracts');
-    // props.clickShowForm();
     dispatch(showPopup());
   };
 
