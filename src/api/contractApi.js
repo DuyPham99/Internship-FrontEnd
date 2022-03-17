@@ -21,3 +21,8 @@ export const contractClose= async (id) => {
   return await apiClient.post(url, id);
 }
 
+export const getStatistic= async (id) => {
+  const url = '/contract/statistic';
+  return await apiClient.get(url);
+}
+
