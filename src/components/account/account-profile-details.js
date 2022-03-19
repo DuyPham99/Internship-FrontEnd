@@ -154,6 +154,7 @@ export const AccountProfileDetails = (props) => {
                 fullWidth
                 label="Username"
                 name="username"
+                required
                 onChange={handleChange}
                 value={values.username}
                 variant="outlined"

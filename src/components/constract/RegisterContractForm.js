@@ -81,6 +81,7 @@ export default function RegisterContractForm() {
     data.dateEnd = value[1];
     data.status = "PENDING";
     createContract(data);
+    window.location.reload();
   };
 
   return (
@@ -97,7 +98,7 @@ export default function RegisterContractForm() {
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <TextField
                 id="name"
-                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                // inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                 name="name"
                 label="Name"
                 fullWidth
@@ -121,6 +122,7 @@ export default function RegisterContractForm() {
                 id="age"
                 name="age"
                 label="Age"
+                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                 fullWidth
                 rules={{ required: 'Age required' }}
                 onChange={onChange}

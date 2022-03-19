@@ -24,7 +24,6 @@ export const Sales = (props) => {
     ],
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
   };
-
   const options = {
     animation: false,
     cornerRadius: 20,
@@ -80,6 +79,7 @@ export const Sales = (props) => {
       try {
         const response = await getStatistic();
         setDataDetails(response);
+        console.log(response);
         console.log("Success to ccount list from server");
       } catch (error) {
         console.log(error);
